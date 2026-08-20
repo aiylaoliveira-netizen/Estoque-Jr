@@ -17,8 +17,11 @@
     --gold:#A98753;
     --line:#EAD9D2;
     --line-soft:#F3E6E0;
+    --green:#5B8A6B;
+    --amber:#C08A3E;
   }
   *{box-sizing:border-box;}
+  button{appearance:none;-webkit-appearance:none;font:inherit;}
   body{
     margin:0;
     background:var(--bg);
@@ -27,7 +30,7 @@
     min-height:100vh;
     padding-bottom:60px;
   }
-  .wrap{max-width:720px;margin:0 auto;padding:28px 18px 40px;}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 18px 40px;}
   header{margin-bottom:22px;}
   .eyebrow{
     font-family:'IBM Plex Mono',monospace;
@@ -45,26 +48,52 @@
     line-height:1.05;
   }
   .subtitle{color:var(--ink-soft);font-size:14px;margin-bottom:18px;}
-  .totalgeral{
-    background:var(--ink);
-    color:#FBF1EE;
-    border-radius:14px;
-    padding:16px 18px;
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
+  .app-bar{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+  .app-icon{
+    width:44px;height:44px;border-radius:12px;
+    background:var(--rose);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;flex:0 0 auto;
   }
-  .totalgeral .label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;}
-  .totalgeral .value{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:500;color:#F0C9B8;}
+  .app-name{font-family:'Fraunces',serif;font-weight:600;font-size:19px;flex:1;}
+  .app-logout{font-size:18px;color:var(--ink-soft);}
 
-  .tabs{display:flex;gap:8px;margin:22px 0 16px;overflow-x:auto;padding-bottom:2px;}
+  .totalgeral{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    text-align:right;
+  }
+  .totalgeral .label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:2px;}
+  .totalgeral .value{font-family:'Fraunces',serif;font-size:30px;font-weight:600;color:var(--rose-dark);}
+
+  .mainnav{display:flex;gap:6px;margin:22px 0 20px;overflow-x:auto;border-bottom:1px solid var(--line);}
+  .mainnav-btn{
+    flex:0 0 auto;
+    padding:10px 14px;
+    background:none;
+    border:none;
+    border-bottom:2px solid transparent;
+    color:var(--ink-soft);
+    font-size:14px;
+    font-weight:600;
+    font-family:'Inter',sans-serif;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .mainnav-btn.active{color:var(--rose-dark);border-bottom-color:var(--rose);}
+
+  .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px;}
+  .section-title h2{font-family:'Fraunces',serif;font-size:22px;font-weight:600;margin:0;}
+
+  .tabs{display:flex;gap:8px;margin:0 0 16px;overflow-x:auto;padding-bottom:2px;}
   .tab{
     flex:0 0 auto;
     padding:9px 16px;
     border-radius:999px;
-    background:var(--panel);
+    background-color:var(--panel) !important;
     border:1px solid var(--line);
-    color:var(--ink-soft);
+    color:var(--ink-soft) !important;
     font-size:13px;
     font-weight:500;
     cursor:pointer;
@@ -81,11 +110,7 @@
     margin-right:7px;
     vertical-align:middle;
   }
-  .tab.active{
-    background:var(--rose);
-    border-color:var(--rose);
-    color:#fff;
-  }
+  .tab.active{background-color:var(--rose) !important;border-color:var(--rose);color:#fff !important;}
   .tab.active::before{background:#fff;}
 
   .sede-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;}
@@ -103,13 +128,17 @@
   }
   .sede-name:focus{outline:1px dashed var(--rose);}
   .sede-total{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:13px;
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-weight:600;
     color:var(--rose-dark);
-    background:var(--line-soft);
-    padding:5px 10px;
-    border-radius:8px;
     white-space:nowrap;
+  }
+  .sede-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:18px;
   }
 
   .search{
@@ -125,8 +154,8 @@
   .search:focus{outline:none;border-color:var(--rose);}
 
   form.add-form{
-    background:var(--panel);
-    border:1px solid var(--line);
+    background:var(--line-soft);
+    border:1.5px dashed var(--rose);
     border-radius:14px;
     padding:14px;
     display:grid;
@@ -135,19 +164,20 @@
     margin-bottom:18px;
   }
   .add-form .row{display:flex;gap:8px;}
-  .add-form input{
+  .add-form input, .add-form select{
     padding:10px 11px;
     border-radius:9px;
     border:1px solid var(--line);
     font-size:14px;
     font-family:'Inter',sans-serif;
     width:100%;
+    background:#fff;
   }
-  .add-form input:focus{outline:none;border-color:var(--rose);}
+  .add-form input:focus, .add-form select:focus{outline:none;border-color:var(--rose);}
   .add-form input.qty,.add-form input.price{font-family:'IBM Plex Mono',monospace;}
   .add-btn{
-    background:var(--rose);
-    color:#fff;
+    background:none;
+    color:var(--rose-dark);
     border:none;
     border-radius:9px;
     padding:10px 14px;
@@ -155,8 +185,11 @@
     font-weight:600;
     cursor:pointer;
     font-family:'Inter',sans-serif;
+    text-align:center;
   }
-  .add-btn:hover{background:var(--rose-dark);}
+  .add-btn:hover{color:var(--rose);text-decoration:underline;}
+  .add-btn.small{background:var(--rose);color:#fff;padding:9px 14px;font-size:13px;}
+  .add-btn.small:hover{background:var(--rose-dark);color:#fff;text-decoration:none;}
 
   .list{display:flex;flex-direction:column;gap:8px;}
   .item{
@@ -169,7 +202,8 @@
     justify-content:space-between;
     gap:10px;
   }
-  .item .name{font-size:14px;font-weight:500;flex:1;min-width:0;overflow-wrap:break-word;}
+  .item .name{font-family:'Fraunces',serif;font-size:16px;font-weight:600;flex:1;min-width:0;overflow-wrap:break-word;}
+  .item .meta{font-size:12px;color:var(--ink-soft);margin-top:2px;}
   .item .nums{
     font-family:'IBM Plex Mono',monospace;
     font-size:13px;
@@ -177,7 +211,8 @@
     text-align:right;
     white-space:nowrap;
   }
-  .item .nums .sub{color:var(--gold);font-weight:500;}
+  .item .nums .sub{color:var(--rose-dark);font-weight:600;font-size:15px;font-family:'Fraunces',serif;}
+  .item .insured{color:var(--ink-soft);}
   .del{
     background:none;
     border:none;
@@ -188,6 +223,20 @@
     line-height:1;
   }
   .del:hover{color:var(--rose-dark);}
+  .icon-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:14px;
+    cursor:pointer;
+    padding:5px 8px;
+    line-height:1;
+    border-radius:7px;
+  }
+  .icon-btn:hover{border-color:var(--rose);color:var(--rose-dark);}
+  .icon-btn.up:hover{border-color:var(--green);color:var(--green);}
+  .icon-btn.down:hover{border-color:var(--amber);color:var(--amber);}
+  .actions-cell{display:flex;gap:6px;align-items:center;flex-wrap:wrap;}
 
   .empty{
     text-align:center;
@@ -230,14 +279,12 @@
   body.readonly .client-badge{display:flex;}
   body.readonly .add-form,
   body.readonly .del,
+  body.readonly .icon-btn,
+  body.readonly .cat-form,
   body.readonly #shareBar{display:none !important;}
   body.readonly .sede-name{pointer-events:none;background:transparent;}
 
-  .share-bar{
-    display:flex;
-    gap:8px;
-    margin-bottom:16px;
-  }
+  .share-bar{display:flex;gap:8px;margin-bottom:16px;}
   .share-btn{
     flex:1;
     background:var(--panel);
@@ -251,18 +298,61 @@
     cursor:pointer;
   }
   .share-btn:hover{border-color:var(--rose);}
-  .item .insured{color:var(--ink-soft);}
+
+  .add-btn.small{padding:9px 14px;font-size:13px;}
+
+  table.data-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  table.data-table th, table.data-table td{padding:10px 8px;text-align:left;font-size:13px;border-bottom:1px solid var(--line-soft);}
+  table.data-table th{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);background:var(--line-soft);}
+  table.data-table td.num, table.data-table th.num{font-family:'IBM Plex Mono',monospace;}
+  table.data-table tr:last-child td{border-bottom:none;}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .badge-sede{
+    display:inline-block;
+    font-size:11px;
+    background:var(--line-soft);
+    color:var(--rose-dark);
+    padding:2px 8px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .badge-tipo-entrada{color:var(--green);font-weight:600;}
+  .badge-tipo-saida{color:var(--rose-dark);font-weight:600;}
+
+  .cat-form{display:flex;gap:8px;margin-bottom:16px;}
+  .cat-form input{flex:1;padding:10px 11px;border-radius:9px;border:1px solid var(--line);font-size:14px;font-family:'Inter',sans-serif;}
+  .cat-form input:focus{outline:none;border-color:var(--rose);}
+  .cat-list{display:flex;flex-direction:column;gap:8px;}
+  .cat-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+  .cat-item .name{font-size:14px;font-weight:500;}
+  .cat-item .count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="app-bar">
+    <div class="app-icon">📦</div>
+    <div class="app-name">Estoque Jr Imports</div>
+    <div class="app-logout">⎋</div>
+  </div>
+
+  <div class="mainnav" id="mainNav">
+    <button class="mainnav-btn active" data-view="sedes">📦 Sedes</button>
+    <button class="mainnav-btn" data-view="produtos">🔗 Produtos</button>
+    <button class="mainnav-btn" data-view="movimentacoes">↔️ Movimentações</button>
+    <button class="mainnav-btn" data-view="categorias">🏷️ Categorias</button>
+  </div>
+
   <header>
     <div class="eyebrow">Sistema de estoque · equipe</div>
     <h1>Estoque Jr Imports</h1>
-    <div class="subtitle">Dados compartilhados entre as 3 sedes</div>
-    <div class="totalgeral">
-      <span class="label">Valor total em estoque</span>
-      <span class="value" id="totalGeral">R$ 0,00</span>
+    <div class="subtitle" style="margin-bottom:0;">Dados compartilhados entre as 3 sedes</div>
+    <div class="header-row" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:16px;">
+      <div class="tabs" id="tabs" style="margin:0;"></div>
+      <div class="totalgeral">
+        <span class="label">Valor total em estoque</span>
+        <span class="value" id="totalGeral">R$ 0,00</span>
+      </div>
     </div>
   </header>
 
@@ -272,28 +362,75 @@
     <button class="share-btn" id="copyClientLink">Copiar link para clientes (somente leitura)</button>
   </div>
 
-  <div class="tabs" id="tabs"></div>
+  <!-- VIEW: SEDES -->
+  <div id="view-sedes">
 
-  <div class="sede-header">
-    <input class="sede-name" id="sedeNameInput" />
-    <span class="sede-total" id="sedeTotal">R$ 0,00</span>
+    <div class="sede-card">
+      <div class="sede-header">
+        <input class="sede-name" id="sedeNameInput" />
+        <span class="sede-total" id="sedeTotal">R$ 0,00</span>
+      </div>
+
+      <input class="search" id="searchInput" placeholder="Buscar produto nesta sede..." />
+
+      <form class="add-form" id="addForm">
+        <input type="text" id="prodName" placeholder="Nome do produto" required />
+        <div class="row">
+          <input type="number" class="qty" id="prodQty" placeholder="Quantidade" min="0" step="1" required />
+          <input type="number" class="price" id="prodPrice" placeholder="Preço unit. (R$)" min="0" step="0.01" required />
+        </div>
+        <div class="row">
+          <input type="number" class="price" id="prodPriceInsured" placeholder="Valor com seguro (R$)" min="0" step="0.01" />
+        </div>
+        <select id="prodCategoria">
+          <option value="">Sem categoria</option>
+        </select>
+        <button type="submit" class="add-btn">+ Adicionar à sede</button>
+      </form>
+
+      <div class="list" id="list"></div>
+    </div>
   </div>
 
-  <input class="search" id="searchInput" placeholder="Buscar produto nesta sede..." />
-
-  <form class="add-form" id="addForm">
-    <input type="text" id="prodName" placeholder="Nome do produto" required />
-    <div class="row">
-      <input type="number" class="qty" id="prodQty" placeholder="Quantidade" min="0" step="1" required />
-      <input type="number" class="price" id="prodPrice" placeholder="Preço unit. (R$)" min="0" step="0.01" required />
+  <!-- VIEW: PRODUTOS -->
+  <div id="view-produtos" style="display:none;">
+    <div class="section-title"><h2>Produtos</h2></div>
+    <input class="search" id="searchProdutos" placeholder="Buscar por nome..." />
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nome</th><th>Sede</th><th>Categoria</th><th class="num">Preço unit.</th><th class="num">Qtd.</th><th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="produtosTableBody"></tbody>
+      </table>
     </div>
-    <div class="row">
-      <input type="number" class="price" id="prodPriceInsured" placeholder="Valor com seguro (R$)" min="0" step="0.01" />
-    </div>
-    <button type="submit" class="add-btn">+ Adicionar à sede</button>
-  </form>
+  </div>
 
-  <div class="list" id="list"></div>
+  <!-- VIEW: MOVIMENTACOES -->
+  <div id="view-movimentacoes" style="display:none;">
+    <div class="section-title"><h2>Movimentações</h2></div>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr><th>Data</th><th>Produto</th><th>Sede</th><th>Tipo</th><th class="num">Qtd.</th></tr>
+        </thead>
+        <tbody id="movimentacoesTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VIEW: CATEGORIAS -->
+  <div id="view-categorias" style="display:none;">
+    <div class="section-title"><h2>Categorias</h2></div>
+    <form class="cat-form" id="catForm">
+      <input type="text" id="catName" placeholder="Nova categoria" />
+      <button type="submit" class="add-btn small">+ Adicionar</button>
+    </form>
+    <div class="cat-list" id="catList"></div>
+  </div>
+
 </div>
 <div class="status" id="status">salvando...</div>
 
@@ -316,6 +453,7 @@ const estoqueRef = doc(db, "estoque", "dados");
 
 let data = null;
 let activeSede = 0;
+let currentView = 'sedes';
 
 function defaultData(){
   return {
@@ -323,17 +461,20 @@ function defaultData(){
       { id:'s1', name:'Foz', products:[] },
       { id:'s2', name:'São Paulo', products:[] },
       { id:'s3', name:'BH', products:[] }
-    ]
+    ],
+    categorias: [],
+    movimentacoes: []
   };
 }
 
-// Atualiza nomes antigos ("Sede 1", "Sede 2", "Sede 3") para os nomes de cidade,
-// sem apagar produtos já cadastrados.
 function migrateOldNames(d){
   const oldToNew = { 'Sede 1':'Foz', 'Sede 2':'São Paulo', 'Sede 3':'BH', 'Fortaleza':'BH' };
   d.sedes.forEach(sede=>{
     if(oldToNew[sede.name]) sede.name = oldToNew[sede.name];
+    sede.products.forEach(p=>{ if(p.categoria === undefined) p.categoria = ''; });
   });
+  if(!d.categorias) d.categorias = [];
+  if(!d.movimentacoes) d.movimentacoes = [];
   return d;
 }
 
@@ -342,14 +483,18 @@ function fmtMoney(v){
 }
 
 async function load(){
+  // Mostra as sedes padrão imediatamente, sem esperar a rede.
+  data = migrateOldNames(defaultData());
+  render();
   try{
     const snap = await getDoc(estoqueRef);
-    data = snap.exists() ? snap.data() : defaultData();
+    if(snap.exists()){
+      data = migrateOldNames(snap.data());
+      render();
+    }
   }catch(e){
-    data = defaultData();
+    // mantém os dados padrão já exibidos
   }
-  data = migrateOldNames(data);
-  render();
 }
 
 async function save(){
@@ -374,16 +519,54 @@ function showStatus(text){
 function sedeValue(sede){
   return sede.products.reduce((sum,p)=>sum + (p.qty*p.price), 0);
 }
-
 function totalGeral(){
   return data.sedes.reduce((sum,s)=>sum + sedeValue(s), 0);
 }
 
-function render(){
+function isReadOnly(){
+  return new URLSearchParams(window.location.search).get('cliente') === '1';
+}
+
+function logMovimento(tipo, produtoNome, sedeNome, qtd){
+  data.movimentacoes.unshift({
+    id: 'm'+Date.now()+Math.random().toString(16).slice(2),
+    data: new Date().toISOString(),
+    produto: produtoNome,
+    sede: sedeNome,
+    tipo: tipo,
+    qtd: qtd
+  });
+  if(data.movimentacoes.length > 500) data.movimentacoes.length = 500;
+}
+
+function switchView(view){
+  currentView = view;
+  ['sedes','produtos','movimentacoes','categorias'].forEach(v=>{
+    document.getElementById('view-'+v).style.display = (v===view) ? '' : 'none';
+  });
+  document.getElementById('tabs').style.display = (view==='sedes') ? 'flex' : 'none';
+  document.querySelectorAll('.mainnav-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.view === view);
+  });
+  renderCurrentView();
+}
+
+function renderCurrentView(){
+  if(currentView === 'sedes') renderSedesView();
+  else if(currentView === 'produtos') renderProdutosView();
+  else if(currentView === 'movimentacoes') renderMovimentacoesView();
+  else if(currentView === 'categorias') renderCategoriasView();
+  document.getElementById('totalGeral').textContent = fmtMoney(totalGeral());
+}
+
+function render(){ renderCurrentView(); }
+
+/* ---------- SEDES VIEW ---------- */
+function renderSedesView(){
   renderTabs();
   renderSedeHeader();
+  renderCategoriaSelect();
   renderList();
-  document.getElementById('totalGeral').textContent = fmtMoney(totalGeral());
 }
 
 function renderTabs(){
@@ -393,7 +576,7 @@ function renderTabs(){
     const btn = document.createElement('button');
     btn.className = 'tab' + (i===activeSede ? ' active' : '');
     btn.textContent = sede.name;
-    btn.onclick = ()=>{ activeSede = i; render(); };
+    btn.onclick = ()=>{ activeSede = i; renderSedesView(); };
     tabs.appendChild(btn);
   });
 }
@@ -405,11 +588,17 @@ function renderSedeHeader(){
   nameInput.readOnly = isReadOnly();
   nameInput.onchange = async ()=>{
     sede.name = nameInput.value.trim() || sede.name;
-    render();
+    renderSedesView();
     await save();
   };
   document.getElementById('sedeTotal').textContent = fmtMoney(sedeValue(sede));
   document.getElementById('searchInput').value = '';
+}
+
+function renderCategoriaSelect(){
+  const sel = document.getElementById('prodCategoria');
+  sel.innerHTML = '<option value="">Sem categoria</option>' +
+    data.categorias.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
 }
 
 function renderList(){
@@ -434,24 +623,21 @@ function renderList(){
     const item = document.createElement('div');
     item.className = 'item';
     item.innerHTML = `
-      <div class="name">${escapeHtml(p.name)}</div>
-      <div class="nums">${p.qty} un · ${fmtMoney(p.price)}${p.priceInsured ? `<br><span class="insured">c/ seguro: ${fmtMoney(p.priceInsured)}</span>` : ''}<br><span class="sub">${fmtMoney(p.qty*p.price)}</span></div>
+      <div style="flex:1;min-width:0;">
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="meta">${p.qty} un. × ${fmtMoney(p.price)}${p.categoria ? ' · ' + escapeHtml(p.categoria) : ''}${p.priceInsured ? ' · c/ seguro: ' + fmtMoney(p.priceInsured) : ''}</div>
+      </div>
+      <div class="nums"><span class="sub">${fmtMoney(p.qty*p.price)}</span></div>
       <button class="del" title="Remover">×</button>
     `;
     item.querySelector('.del').onclick = async ()=>{
       if(isReadOnly()) return;
       sede.products = sede.products.filter(x=>x.id !== p.id);
-      render();
+      renderSedesView();
       await save();
     };
     list.appendChild(item);
   });
-}
-
-function escapeHtml(str){
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
 }
 
 document.getElementById('searchInput').addEventListener('input', renderList);
@@ -463,23 +649,187 @@ document.getElementById('addForm').addEventListener('submit', async (e)=>{
   const price = parseFloat(document.getElementById('prodPrice').value);
   const priceInsuredRaw = document.getElementById('prodPriceInsured').value;
   const priceInsured = priceInsuredRaw === '' ? null : parseFloat(priceInsuredRaw);
+  const categoria = document.getElementById('prodCategoria').value;
   if(!name || isNaN(qty) || isNaN(price)) return;
 
   const sede = data.sedes[activeSede];
-  sede.products.push({ id: 'p'+Date.now()+Math.random().toString(16).slice(2), name, qty, price, priceInsured });
+  sede.products.push({ id: 'p'+Date.now()+Math.random().toString(16).slice(2), name, qty, price, priceInsured, categoria });
+  if(qty > 0) logMovimento('entrada', name, sede.name, qty);
 
   e.target.reset();
-  render();
+  renderSedesView();
   await save();
 });
 
-function isReadOnly(){
-  return new URLSearchParams(window.location.search).get('cliente') === '1';
+/* ---------- PRODUTOS VIEW ---------- */
+function allProductsFlat(){
+  const rows = [];
+  data.sedes.forEach(sede=>{
+    sede.products.forEach(p=>{
+      rows.push({ sede, prod: p });
+    });
+  });
+  return rows;
+}
+
+function renderProdutosView(){
+  const query = (document.getElementById('searchProdutos').value || '').trim().toLowerCase();
+  const rows = allProductsFlat().filter(r => r.prod.name.toLowerCase().includes(query));
+  const tbody = document.getElementById('produtosTableBody');
+  tbody.innerHTML = '';
+
+  if(rows.length === 0){
+    tbody.innerHTML = `<tr><td colspan="6"><div class="empty">Nenhum produto encontrado.</div></td></tr>`;
+    return;
+  }
+
+  rows.forEach(({sede, prod})=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(prod.name)}</td>
+      <td><span class="badge-sede">${escapeHtml(sede.name)}</span></td>
+      <td>${prod.categoria ? escapeHtml(prod.categoria) : '—'}</td>
+      <td class="num">${fmtMoney(prod.price)}</td>
+      <td class="num">${prod.qty}</td>
+      <td>
+        <div class="actions-cell">
+          <button class="icon-btn up" title="Entrada +1">↑</button>
+          <button class="icon-btn down" title="Saída -1">↓</button>
+          <button class="icon-btn" title="Editar">✎</button>
+          <button class="icon-btn" title="Excluir">🗑</button>
+        </div>
+      </td>
+    `;
+    const [upBtn, downBtn, editBtn, delBtn] = tr.querySelectorAll('.icon-btn');
+
+    upBtn.onclick = async ()=>{
+      if(isReadOnly()) return;
+      prod.qty += 1;
+      logMovimento('entrada', prod.name, sede.name, 1);
+      renderProdutosView();
+      await save();
+    };
+    downBtn.onclick = async ()=>{
+      if(isReadOnly()) return;
+      if(prod.qty <= 0) return;
+      prod.qty -= 1;
+      logMovimento('saida', prod.name, sede.name, 1);
+      renderProdutosView();
+      await save();
+    };
+    editBtn.onclick = async ()=>{
+      if(isReadOnly()) return;
+      const newName = prompt('Nome do produto:', prod.name);
+      if(newName === null) return;
+      const newQty = prompt('Quantidade:', prod.qty);
+      if(newQty === null) return;
+      const newPrice = prompt('Preço unitário (R$):', prod.price);
+      if(newPrice === null) return;
+      const newCat = prompt('Categoria (deixe em branco para nenhuma):', prod.categoria || '');
+      if(newCat === null) return;
+      prod.name = newName.trim() || prod.name;
+      prod.qty = parseFloat(newQty);
+      prod.price = parseFloat(newPrice);
+      prod.categoria = newCat.trim();
+      renderProdutosView();
+      await save();
+    };
+    delBtn.onclick = async ()=>{
+      if(isReadOnly()) return;
+      if(!confirm('Remover "'+prod.name+'" da sede '+sede.name+'?')) return;
+      sede.products = sede.products.filter(x=>x.id !== prod.id);
+      renderProdutosView();
+      await save();
+    };
+
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById('searchProdutos').addEventListener('input', renderProdutosView);
+
+/* ---------- MOVIMENTACOES VIEW ---------- */
+function renderMovimentacoesView(){
+  const tbody = document.getElementById('movimentacoesTableBody');
+  tbody.innerHTML = '';
+  if(!data.movimentacoes || data.movimentacoes.length === 0){
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty">Nenhuma movimentação registrada ainda.</div></td></tr>`;
+    return;
+  }
+  data.movimentacoes.forEach(m=>{
+    const dt = new Date(m.data);
+    const dtStr = isNaN(dt.getTime()) ? '' : dt.toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'2-digit',hour:'2-digit',minute:'2-digit'});
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${dtStr}</td>
+      <td>${escapeHtml(m.produto)}</td>
+      <td><span class="badge-sede">${escapeHtml(m.sede)}</span></td>
+      <td class="${m.tipo==='entrada' ? 'badge-tipo-entrada' : 'badge-tipo-saida'}">${m.tipo==='entrada' ? 'Entrada' : 'Saída'}</td>
+      <td class="num">${m.qtd}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/* ---------- CATEGORIAS VIEW ---------- */
+function renderCategoriasView(){
+  const list = document.getElementById('catList');
+  list.innerHTML = '';
+  if(data.categorias.length === 0){
+    list.innerHTML = `<div class="empty">Nenhuma categoria cadastrada ainda.</div>`;
+    return;
+  }
+  data.categorias.forEach(cat=>{
+    const count = allProductsFlat().filter(r => r.prod.categoria === cat).length;
+    const item = document.createElement('div');
+    item.className = 'cat-item';
+    item.innerHTML = `
+      <div>
+        <div class="name">${escapeHtml(cat)}</div>
+        <div class="count">${count} produto(s)</div>
+      </div>
+      <button class="del" title="Remover categoria">×</button>
+    `;
+    item.querySelector('.del').onclick = async ()=>{
+      if(isReadOnly()) return;
+      if(!confirm('Remover a categoria "'+cat+'"? Os produtos ficarão sem categoria.')) return;
+      data.categorias = data.categorias.filter(c => c !== cat);
+      data.sedes.forEach(sede=>{
+        sede.products.forEach(p=>{ if(p.categoria === cat) p.categoria = ''; });
+      });
+      renderCategoriasView();
+      await save();
+    };
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('catForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const input = document.getElementById('catName');
+  const name = input.value.trim();
+  if(!name) return;
+  if(data.categorias.includes(name)){ input.value=''; return; }
+  data.categorias.push(name);
+  input.value = '';
+  renderCategoriasView();
+  await save();
+});
+
+/* ---------- SHARED ---------- */
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 if(isReadOnly()){
   document.body.classList.add('readonly');
 }
+
+document.querySelectorAll('.mainnav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> switchView(btn.dataset.view));
+});
 
 document.getElementById('copyClientLink').addEventListener('click', async ()=>{
   const url = new URL(window.location.href);
