@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estoque Jr Imports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FBF1EE;
+    --panel:#FFFFFF;
+    --ink:#2B1420;
+    --ink-soft:#6B4B54;
+    --rose:#B85C71;
+    --rose-dark:#93445A;
+    --gold:#A98753;
+    --line:#EAD9D2;
+    --line-soft:#F3E6E0;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    padding-bottom:60px;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:28px 18px 40px;}
+  header{margin-bottom:22px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--rose-dark);
+    margin-bottom:6px;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:32px;
+    margin:0 0 4px;
+    line-height:1.05;
+  }
+  .subtitle{color:var(--ink-soft);font-size:14px;margin-bottom:18px;}
+  .totalgeral{
+    background:var(--ink);
+    color:#FBF1EE;
+    border-radius:14px;
+    padding:16px 18px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+  }
+  .totalgeral .label{font-size:12px;letter-spacing:.08em;text-transform:uppercase;opacity:.7;}
+  .totalgeral .value{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:500;color:#F0C9B8;}
+
+  .tabs{display:flex;gap:8px;margin:22px 0 16px;overflow-x:auto;padding-bottom:2px;}
+  .tab{
+    flex:0 0 auto;
+    padding:9px 16px;
+    border-radius:999px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:13px;
+    font-weight:500;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:all .15s ease;
+    position:relative;
+  }
+  .tab::before{
+    content:'';
+    display:inline-block;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--gold);
+    margin-right:7px;
+    vertical-align:middle;
+  }
+  .tab.active{
+    background:var(--rose);
+    border-color:var(--rose);
+    color:#fff;
+  }
+  .tab.active::before{background:#fff;}
+
+  .sede-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;}
+  .sede-name{
+    font-family:'Fraunces',serif;
+    font-size:20px;
+    font-weight:600;
+    border:none;
+    background:transparent;
+    color:var(--ink);
+    padding:2px 4px;
+    border-radius:6px;
+    width:auto;
+    max-width:60%;
+  }
+  .sede-name:focus{outline:1px dashed var(--rose);}
+  .sede-total{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:var(--rose-dark);
+    background:var(--line-soft);
+    padding:5px 10px;
+    border-radius:8px;
+    white-space:nowrap;
+  }
+
+  .search{
+    width:100%;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    font-size:14px;
+    margin-bottom:12px;
+    font-family:'Inter',sans-serif;
+  }
+  .search:focus{outline:none;border-color:var(--rose);}
+
+  form.add-form{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
+    margin-bottom:18px;
+  }
+  .add-form .row{display:flex;gap:8px;}
+  .add-form input{
+    padding:10px 11px;
+    border-radius:9px;
+    border:1px solid var(--line);
+    font-size:14px;
+    font-family:'Inter',sans-serif;
+    width:100%;
+  }
+  .add-form input:focus{outline:none;border-color:var(--rose);}
+  .add-form input.qty,.add-form input.price{font-family:'IBM Plex Mono',monospace;}
+  .add-btn{
+    background:var(--rose);
+    color:#fff;
+    border:none;
+    border-radius:9px;
+    padding:10px 14px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Inter',sans-serif;
+  }
+  .add-btn:hover{background:var(--rose-dark);}
+
+  .list{display:flex;flex-direction:column;gap:8px;}
+  .item{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .item .name{font-size:14px;font-weight:500;flex:1;min-width:0;overflow-wrap:break-word;}
+  .item .nums{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    text-align:right;
+    white-space:nowrap;
+  }
+  .item .nums .sub{color:var(--gold);font-weight:500;}
+  .del{
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-size:17px;
+    cursor:pointer;
+    padding:2px 4px;
+    line-height:1;
+  }
+  .del:hover{color:var(--rose-dark);}
+
+  .empty{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:13px;
+    padding:30px 10px;
+    border:1px dashed var(--line);
+    border-radius:12px;
+  }
+  .status{
+    position:fixed;bottom:14px;left:50%;transform:translateX(-50%);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+    background:var(--panel);
+    border:1px solid var(--line);
+    padding:6px 12px;
+    border-radius:999px;
+    opacity:0;
+    transition:opacity .3s;
+  }
+  .status.show{opacity:1;}
+
+  .client-badge{
+    display:none;
+    align-items:center;
+    gap:6px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--gold);
+    background:var(--line-soft);
+    border:1px solid var(--line);
+    padding:5px 10px;
+    border-radius:999px;
+    margin-bottom:14px;
+    width:fit-content;
+  }
+  body.readonly .client-badge{display:flex;}
+  body.readonly .add-form,
+  body.readonly .del,
+  body.readonly #shareBar{display:none !important;}
+  body.readonly .sede-name{pointer-events:none;background:transparent;}
+
+  .share-bar{
+    display:flex;
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .share-btn{
+    flex:1;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:12.5px;
+    font-weight:600;
+    padding:9px 10px;
+    border-radius:9px;
+    cursor:pointer;
+  }
+  .share-btn:hover{border-color:var(--rose);}
+  .item .insured{color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Sistema de estoque · equipe</div>
+    <h1>Estoque Jr Imports</h1>
+    <div class="subtitle">Dados compartilhados entre as 3 sedes</div>
+    <div class="totalgeral">
+      <span class="label">Valor total em estoque</span>
+      <span class="value" id="totalGeral">R$ 0,00</span>
+    </div>
+  </header>
+
+  <div class="client-badge">🔒 Modo visualização — somente leitura</div>
+
+  <div class="share-bar" id="shareBar">
+    <button class="share-btn" id="copyClientLink">Copiar link para clientes (somente leitura)</button>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="sede-header">
+    <input class="sede-name" id="sedeNameInput" />
+    <span class="sede-total" id="sedeTotal">R$ 0,00</span>
+  </div>
+
+  <input class="search" id="searchInput" placeholder="Buscar produto nesta sede..." />
+
+  <form class="add-form" id="addForm">
+    <input type="text" id="prodName" placeholder="Nome do produto" required />
+    <div class="row">
+      <input type="number" class="qty" id="prodQty" placeholder="Quantidade" min="0" step="1" required />
+      <input type="number" class="price" id="prodPrice" placeholder="Preço unit. (R$)" min="0" step="0.01" required />
+    </div>
+    <div class="row">
+      <input type="number" class="price" id="prodPriceInsured" placeholder="Valor com seguro (R$)" min="0" step="0.01" />
+    </div>
+    <button type="submit" class="add-btn">+ Adicionar à sede</button>
+  </form>
+
+  <div class="list" id="list"></div>
+</div>
+<div class="status" id="status">salvando...</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCcuwwlw1LIRQyxJ52v6VlS1Wmfdr1fSR8",
+  authDomain: "estoquejrimports.firebaseapp.com",
+  projectId: "estoquejrimports",
+  storageBucket: "estoquejrimports.firebasestorage.app",
+  messagingSenderId: "271234952596",
+  appId: "1:271234952596:web:55179980ca1f8e539bf381"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const estoqueRef = doc(db, "estoque", "dados");
+
+let data = null;
+let activeSede = 0;
+
+function defaultData(){
+  return {
+    sedes: [
+      { id:'s1', name:'Foz', products:[] },
+      { id:'s2', name:'São Paulo', products:[] },
+      { id:'s3', name:'BH', products:[] }
+    ]
+  };
+}
+
+// Atualiza nomes antigos ("Sede 1", "Sede 2", "Sede 3") para os nomes de cidade,
+// sem apagar produtos já cadastrados.
+function migrateOldNames(d){
+  const oldToNew = { 'Sede 1':'Foz', 'Sede 2':'São Paulo', 'Sede 3':'BH', 'Fortaleza':'BH' };
+  d.sedes.forEach(sede=>{
+    if(oldToNew[sede.name]) sede.name = oldToNew[sede.name];
+  });
+  return d;
+}
+
+function fmtMoney(v){
+  return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+
+async function load(){
+  try{
+    const snap = await getDoc(estoqueRef);
+    data = snap.exists() ? snap.data() : defaultData();
+  }catch(e){
+    data = defaultData();
+  }
+  data = migrateOldNames(data);
+  render();
+}
+
+async function save(){
+  showStatus('salvando...');
+  try{
+    await setDoc(estoqueRef, data);
+    showStatus('salvo');
+  }catch(e){
+    showStatus('erro ao salvar');
+  }
+}
+
+let statusTimer;
+function showStatus(text){
+  const el = document.getElementById('status');
+  el.textContent = text;
+  el.classList.add('show');
+  clearTimeout(statusTimer);
+  statusTimer = setTimeout(()=>el.classList.remove('show'), 1200);
+}
+
+function sedeValue(sede){
+  return sede.products.reduce((sum,p)=>sum + (p.qty*p.price), 0);
+}
+
+function totalGeral(){
+  return data.sedes.reduce((sum,s)=>sum + sedeValue(s), 0);
+}
+
+function render(){
+  renderTabs();
+  renderSedeHeader();
+  renderList();
+  document.getElementById('totalGeral').textContent = fmtMoney(totalGeral());
+}
+
+function renderTabs(){
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = '';
+  data.sedes.forEach((sede, i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'tab' + (i===activeSede ? ' active' : '');
+    btn.textContent = sede.name;
+    btn.onclick = ()=>{ activeSede = i; render(); };
+    tabs.appendChild(btn);
+  });
+}
+
+function renderSedeHeader(){
+  const sede = data.sedes[activeSede];
+  const nameInput = document.getElementById('sedeNameInput');
+  nameInput.value = sede.name;
+  nameInput.readOnly = isReadOnly();
+  nameInput.onchange = async ()=>{
+    sede.name = nameInput.value.trim() || sede.name;
+    render();
+    await save();
+  };
+  document.getElementById('sedeTotal').textContent = fmtMoney(sedeValue(sede));
+  document.getElementById('searchInput').value = '';
+}
+
+function renderList(){
+  const sede = data.sedes[activeSede];
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  const products = sede.products.filter(p => p.name.toLowerCase().includes(query));
+
+  if(products.length === 0){
+    const empty = document.createElement('div');
+    empty.className = 'empty';
+    empty.textContent = sede.products.length === 0
+      ? 'Nenhum produto cadastrado nesta sede ainda.'
+      : 'Nenhum produto encontrado para essa busca.';
+    list.appendChild(empty);
+    return;
+  }
+
+  products.forEach(p=>{
+    const item = document.createElement('div');
+    item.className = 'item';
+    item.innerHTML = `
+      <div class="name">${escapeHtml(p.name)}</div>
+      <div class="nums">${p.qty} un · ${fmtMoney(p.price)}${p.priceInsured ? `<br><span class="insured">c/ seguro: ${fmtMoney(p.priceInsured)}</span>` : ''}<br><span class="sub">${fmtMoney(p.qty*p.price)}</span></div>
+      <button class="del" title="Remover">×</button>
+    `;
+    item.querySelector('.del').onclick = async ()=>{
+      if(isReadOnly()) return;
+      sede.products = sede.products.filter(x=>x.id !== p.id);
+      render();
+      await save();
+    };
+    list.appendChild(item);
+  });
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+document.getElementById('searchInput').addEventListener('input', renderList);
+
+document.getElementById('addForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const name = document.getElementById('prodName').value.trim();
+  const qty = parseFloat(document.getElementById('prodQty').value);
+  const price = parseFloat(document.getElementById('prodPrice').value);
+  const priceInsuredRaw = document.getElementById('prodPriceInsured').value;
+  const priceInsured = priceInsuredRaw === '' ? null : parseFloat(priceInsuredRaw);
+  if(!name || isNaN(qty) || isNaN(price)) return;
+
+  const sede = data.sedes[activeSede];
+  sede.products.push({ id: 'p'+Date.now()+Math.random().toString(16).slice(2), name, qty, price, priceInsured });
+
+  e.target.reset();
+  render();
+  await save();
+});
+
+function isReadOnly(){
+  return new URLSearchParams(window.location.search).get('cliente') === '1';
+}
+
+if(isReadOnly()){
+  document.body.classList.add('readonly');
+}
+
+document.getElementById('copyClientLink').addEventListener('click', async ()=>{
+  const url = new URL(window.location.href);
+  url.searchParams.set('cliente', '1');
+  const link = url.toString();
+  try{
+    await navigator.clipboard.writeText(link);
+    document.getElementById('copyClientLink').textContent = 'Link copiado!';
+  }catch(e){
+    prompt('Copie o link abaixo:', link);
+  }
+  setTimeout(()=>{
+    document.getElementById('copyClientLink').textContent = 'Copiar link para clientes (somente leitura)';
+  }, 2000);
+});
+
+load();
+</script>
+</body>
+</html>
