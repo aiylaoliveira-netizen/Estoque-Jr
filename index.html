@@ -326,6 +326,23 @@
   .cat-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
   .cat-item .name{font-size:14px;font-weight:500;}
   .cat-item .count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
+
+  .import-section{margin-bottom:18px;}
+  .import-toggle{
+    background:none;border:none;color:var(--rose-dark);font-size:13px;font-weight:600;
+    cursor:pointer;padding:4px 0;font-family:'Inter',sans-serif;text-decoration:underline;
+  }
+  #importBox{
+    margin-top:10px;background:var(--line-soft);border:1px solid var(--line);
+    border-radius:12px;padding:14px;
+  }
+  #importText{
+    width:100%;min-height:110px;padding:10px 11px;border-radius:9px;border:1px solid var(--line);
+    font-family:'IBM Plex Mono',monospace;font-size:12.5px;resize:vertical;margin-bottom:10px;background:#fff;
+  }
+  #importText:focus{outline:none;border-color:var(--rose);}
+  .import-result{margin-top:8px;font-size:12.5px;color:var(--ink-soft);}
+  body.readonly .import-section{display:none !important;}
 </style>
 </head>
 <body>
@@ -387,6 +404,17 @@
         </select>
         <button type="submit" class="add-btn">+ Adicionar à sede</button>
       </form>
+
+      <div class="import-section" id="importSection">
+        <button class="import-toggle" id="importToggle" type="button">📋 Importar vários produtos de uma vez</button>
+        <div id="importBox" style="display:none;">
+          <textarea id="importText" rows="6" placeholder="Sede - Produto - Quantidade - Preço - Categoria (opcional)
+Foz - Perfume X - 10 - 45,00
+São Paulo - Base Y - 25 - 32,50 - Maquiagem"></textarea>
+          <button class="add-btn small" id="importBtn" type="button">Importar lista</button>
+          <div id="importResult" class="import-result"></div>
+        </div>
+      </div>
 
       <div class="list" id="list"></div>
     </div>
@@ -659,6 +687,70 @@ document.getElementById('addForm').addEventListener('submit', async (e)=>{
   e.target.reset();
   renderSedesView();
   await save();
+});
+
+/* ---------- IMPORTAÇÃO EM LOTE ---------- */
+document.getElementById('importToggle').addEventListener('click', ()=>{
+  const box = document.getElementById('importBox');
+  box.style.display = box.style.display === 'none' ? '' : 'none';
+});
+
+function findSedeByName(nome){
+  const alvo = nome.trim().toLowerCase();
+  return data.sedes.find(s => s.name.trim().toLowerCase() === alvo);
+}
+
+document.getElementById('importBtn').addEventListener('click', async ()=>{
+  const raw = document.getElementById('importText').value;
+  const lines = raw.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+  const resultEl = document.getElementById('importResult');
+
+  if(lines.length === 0){
+    resultEl.textContent = 'Cole a lista de produtos antes de importar.';
+    return;
+  }
+
+  let importados = 0;
+  const erros = [];
+
+  lines.forEach((line, idx)=>{
+    const parts = line.split('-').map(p => p.trim());
+    if(parts.length < 4){
+      erros.push(`Linha ${idx+1}: formato incompleto ("${line}")`);
+      return;
+    }
+    const [sedeNome, nome, qtyStr, priceStr, categoria] = parts;
+    const sede = findSedeByName(sedeNome);
+    if(!sede){
+      erros.push(`Linha ${idx+1}: sede "${sedeNome}" não encontrada`);
+      return;
+    }
+    const qty = parseFloat(qtyStr.replace(',', '.'));
+    const price = parseFloat(priceStr.replace(/[^\d,.-]/g,'').replace(',', '.'));
+    if(!nome || isNaN(qty) || isNaN(price)){
+      erros.push(`Linha ${idx+1}: dados inválidos ("${line}")`);
+      return;
+    }
+    sede.products.push({
+      id: 'p'+Date.now()+Math.random().toString(16).slice(2),
+      name: nome, qty, price, priceInsured: null,
+      categoria: categoria ? categoria.trim() : ''
+    });
+    if(qty > 0) logMovimento('entrada', nome, sede.name, qty);
+    importados++;
+  });
+
+  if(importados > 0){
+    await save();
+    renderSedesView();
+  }
+
+  let msg = `${importados} produto(s) importado(s) com sucesso.`;
+  if(erros.length > 0){
+    msg += ' Problemas: ' + erros.join(' | ');
+  }
+  resultEl.textContent = msg;
+  if(importados > 0) document.getElementById('importText').value = '';
 });
 
 /* ---------- PRODUTOS VIEW ---------- */
